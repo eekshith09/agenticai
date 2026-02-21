@@ -1,3 +1,4 @@
+require('dotenv').config();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -41,51 +42,46 @@ passport.use(new LocalStrategy(
   }
 ));
 
-// ──── Google OAuth Strategy ────
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id') {
-  passport.use(new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        // Check if user already exists with this Google ID
-        let user = await User.findOne({ googleId: profile.id });
-        if (user) return done(null, user);
+// ──── Google OAuth Strategy (always registered) ────
+passport.use(new GoogleStrategy(
+  {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      let user = await User.findOne({ googleId: profile.id });
+      if (user) return done(null, user);
 
-        // Check if user exists with same email
-        user = await User.findOne({ email: profile.emails[0].value });
-        if (user) {
-          user.googleId = profile.id;
-          user.avatar = profile.photos[0]?.value || '';
-          await user.save();
-          return done(null, user);
-        }
-
-        // Create new user — auto-generate a username from Google profile
-        const baseUsername = profile.displayName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
-        let finalUsername = baseUsername;
-        let count = 1;
-        while (await User.findOne({ username: finalUsername })) {
-          finalUsername = baseUsername + count;
-          count++;
-        }
-
-        user = await User.create({
-          googleId: profile.id,
-          name: profile.displayName,
-          username: finalUsername,
-          email: profile.emails[0].value,
-          avatar: profile.photos[0]?.value || ''
-        });
+      user = await User.findOne({ email: profile.emails[0].value });
+      if (user) {
+        user.googleId = profile.id;
+        user.avatar = profile.photos[0]?.value || '';
+        await user.save();
         return done(null, user);
-      } catch (err) {
-        return done(err);
       }
+
+      const baseUsername = profile.displayName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+      let finalUsername = baseUsername;
+      let count = 1;
+      while (await User.findOne({ username: finalUsername })) {
+        finalUsername = baseUsername + count;
+        count++;
+      }
+
+      user = await User.create({
+        googleId: profile.id,
+        name: profile.displayName,
+        username: finalUsername,
+        email: profile.emails[0].value,
+        avatar: profile.photos[0]?.value || ''
+      });
+      return done(null, user);
+    } catch (err) {
+      return done(err);
     }
-  ));
-}
+  }
+));
 
 module.exports = passport;
