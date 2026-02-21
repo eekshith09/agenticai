@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - AgenticAI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0f;
+    }
+    .card {
+      background: #11111d;
+      border: 1px solid #1e1e35;
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .logo span {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .card h1 {
+      font-size: 26px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .card p.sub {
+      text-align: center;
+      color: #555;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+    .error-msg {
+      background: #2a1010;
+      color: #ff6b6b;
+      border: 1px solid #ff6b6b33;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      text-align: center;
+    }
+    .success-msg {
+      background: #0a2a1a;
+      color: #00d4aa;
+      border: 1px solid #00d4aa33;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #1e1e35;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border-color .2s;
+      outline: none;
+      background: #0a0a14;
+      color: #fff;
+    }
+    input::placeholder { color: #333; }
+    input:focus {
+      border-color: #00d4ff;
+    }
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+    .btn-primary {
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      color: #fff;
+      margin-top: 6px;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 22px 0;
+      color: #333;
+      font-size: 13px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #1e1e35;
+    }
+    .divider span { padding: 0 12px; color: #444; }
+    .btn-google {
+      background: #0a0a14;
+      border: 1.5px solid #1e1e35;
+      color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-google:hover { border-color: #333; color: #fff; }
+    .btn-google svg { width: 20px; height: 20px; }
+    .bottom-link {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 14px;
+      color: #555;
+    }
+    .bottom-link a {
+      color: #00d4ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .bottom-link a:hover { text-decoration: underline; }
+    .back-home {
+      text-align: center;
+      margin-top: 14px;
+    }
+    .back-home a {
+      color: #444;
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .back-home a:hover { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <span>AgenticAI</span>
+    </div>
+
+    <h1>Welcome Back</h1>
+    <p class="sub">Sign in to your account</p>
+
+    <% if (typeof error !== 'undefined' && error && error.length > 0) { %>
+      <div class="error-msg"><%= error %></div>
+    <% } %>
+
+    <% if (typeof success !== 'undefined' && success && success.length > 0) { %>
+      <div class="success-msg"><%= success %></div>
+    <% } %>
+
+    <form action="/login" method="POST">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="your_username" required />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="••••••••" required />
+      </div>
+      <button class="btn btn-primary" type="submit">Sign In</button>
+    </form>
+
+    <div class="divider"><span>or</span></div>
+
+    <a href="/auth/google" style="text-decoration:none;">
+      <button class="btn btn-google" type="button">
+        <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.06 24.06 0 0 0 0 21.56l7.98-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continue with Google
+      </button>
+    </a>
+
+    <div class="bottom-link">
+      Don't have an account? <a href="/signup">Create Account</a>
+    </div>
+    <div class="back-home">
+      <a href="/">← Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>

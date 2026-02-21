@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgenticAI - LLM Based Agentic AI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 60px;
+      border-bottom: 1px solid #1e1e2e;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+    .nav-logo .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-links a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 15px;
+      padding: 9px 20px;
+      border-radius: 8px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links .btn-nav {
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      color: #fff;
+      font-weight: 600;
+      padding: 9px 22px;
+      border-radius: 8px;
+    }
+    .nav-links .btn-nav:hover { opacity: 0.9; color: #fff; }
+
+    /* HERO SECTION */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 80px 60px;
+      min-height: 85vh;
+      gap: 40px;
+    }
+
+    /* LEFT SIDE - big title */
+    .hero-left {
+      flex: 1;
+      max-width: 640px;
+    }
+    .hero-left h1 {
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero-left h1 span {
+      color: #00d4ff;
+    }
+    .hero-left p {
+      font-size: 17px;
+      color: #888;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 520px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .btn-create {
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-create:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-login {
+      background: transparent;
+      color: #ccc;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1.5px solid #333;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-login:hover { border-color: #00d4ff; color: #fff; }
+
+    /* RIGHT SIDE - about the website */
+    .hero-right {
+      flex: 1;
+      max-width: 480px;
+    }
+    .about-card {
+      background: #11111d;
+      border: 1px solid #1e1e35;
+      border-radius: 16px;
+      padding: 36px;
+    }
+    .about-card h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .about-card p {
+      color: #888;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #00d4ff22, #7b2ff722);
+      border: 1px solid #00d4ff44;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .feature-text strong {
+      display: block;
+      color: #ddd;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    .feature-text span {
+      color: #666;
+      font-size: 13px;
+    }
+
+    /* TECH BADGES */
+    .tech-bar {
+      background: #0d0d18;
+      border-top: 1px solid #1a1a2e;
+      padding: 28px 60px;
+      display: flex;
+      gap: 48px;
+    }
+    .tech-item strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .tech-item span {
+      font-size: 11px;
+      color: #555;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid #1a1a2e;
+      padding: 24px 60px;
+      text-align: center;
+      color: #444;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">⚡</div>
+      AgenticAI
+    </a>
+    <div class="nav-links">
+      <a href="/login">Login</a>
+      <a href="/signup" class="btn-nav">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+
+    <!-- LEFT - Big Title -->
+    <div class="hero-left">
+      <h1>
+        LLM-Based<br>
+        <span>Agentic AI</span><br>
+        for Tool-Using<br>
+        Reasoning<br>
+        Workflows<br>
+        Automation
+      </h1>
+      <p>Secure AI Workflow Platform — powered by advanced reasoning agents, tool orchestration, and intelligent automation pipelines.</p>
+      <div class="hero-btns">
+        <a href="/signup" class="btn-create">Create Account →</a>
+        <a href="/login" class="btn-login">Sign In</a>
+      </div>
+    </div>
+
+    <!-- RIGHT - About the website -->
+    <div class="hero-right">
+      <div class="about-card">
+        <h2>About This Platform</h2>
+        <p>AgenticAI is a next-generation platform that lets you build, deploy, and monitor LLM-powered agents that can reason, use tools, and automate complex workflows.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-text">
+              <strong>Agentic Reasoning</strong>
+              <span>Chain-of-thought agents that plan and act autonomously</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔧</div>
+            <div class="feature-text">
+              <strong>Tool Orchestration</strong>
+              <span>Connect APIs, databases, search engines and more</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-text">
+              <strong>Secure & Authenticated</strong>
+              <span>JWT auth, bcrypt hashing, session management</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <strong>Fast Automation</strong>
+              <span>Run workflows in parallel with intelligent retry logic</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TECH BAR -->
+  <div class="tech-bar">
+    <div class="tech-item">
+      <strong>JWT</strong>
+      <span>Auth</span>
+    </div>
+    <div class="tech-item">
+      <strong>MongoDB</strong>
+      <span>Database</span>
+    </div>
+    <div class="tech-item">
+      <strong>Docker</strong>
+      <span>Containerized</span>
+    </div>
+    <div class="tech-item">
+      <strong>bcrypt</strong>
+      <span>Hashed</span>
+    </div>
+    <div class="tech-item">
+      <strong>Jenkins</strong>
+      <span>CI/CD</span>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 AgenticAI — LLM-Based Agentic AI Platform. Built with ❤️ by the team.</p>
+  </footer>
+
+</body>
+</html>

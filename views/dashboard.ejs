@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - AgenticAI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 60px;
+      border-bottom: 1px solid #1e1e2e;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .nav-user {
+      color: #888;
+      font-size: 14px;
+    }
+    .nav-user span {
+      color: #00d4ff;
+      font-weight: 600;
+    }
+    .btn-logout {
+      background: #1a0a0a;
+      color: #ff6b6b;
+      border: 1px solid #ff6b6b33;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: #2a1010; }
+
+    /* DASHBOARD MAIN */
+    .dashboard-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* PROJECT TITLE */
+    .project-title-box {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .project-title-box .tag {
+      display: inline-block;
+      background: linear-gradient(135deg, #00d4ff22, #7b2ff722);
+      border: 1px solid #00d4ff44;
+      color: #00d4ff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .project-title-box h1 {
+      font-size: 38px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .project-title-box h1 span { color: #00d4ff; }
+    .project-title-box p {
+      color: #555;
+      font-size: 15px;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* USER PROFILE CARD */
+    .profile-card {
+      background: #11111d;
+      border: 1px solid #1e1e35;
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 700;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-info h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .profile-info p {
+      color: #555;
+      font-size: 14px;
+    }
+
+    /* USER DETAILS GRID */
+    .details-card {
+      background: #11111d;
+      border: 1px solid #1e1e35;
+      border-radius: 16px;
+      padding: 28px 36px;
+      margin-bottom: 30px;
+    }
+    .details-card h3 {
+      font-size: 13px;
+      color: #444;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #1a1a2a;
+      font-size: 14px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .info-label { color: #555; }
+    .info-row .info-value { color: #ccc; font-weight: 600; }
+    .info-row .info-value.highlight { color: #00d4ff; }
+
+    /* DIVIDER */
+    .scroll-hint {
+      text-align: center;
+      padding: 40px 0 20px;
+      color: #333;
+      font-size: 13px;
+    }
+    .scroll-hint span {
+      display: block;
+      font-size: 22px;
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* TEAM SECTION */
+    .team-section {
+      padding: 60px 0 40px;
+    }
+    .team-section h2 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .team-section .team-sub {
+      text-align: center;
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 48px;
+    }
+    .team-cards {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .team-card {
+      background: #11111d;
+      border: 1px solid #1e1e35;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      width: 240px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .team-card:hover {
+      border-color: #00d4ff44;
+      transform: translateY(-4px);
+    }
+    .team-photo {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      overflow: hidden;
+      border: 3px solid #1e1e35;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .team-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .team-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .team-card .role-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #00d4ff22, #7b2ff722);
+      border: 1px solid #00d4ff44;
+      color: #00d4ff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .team-card p {
+      color: #555;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer {
+      border-top: 1px solid #1a1a2e;
+      padding: 24px 60px;
+      text-align: center;
+      color: #333;
+      font-size: 13px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/dashboard" class="nav-logo">
+      <div class="logo-icon">⚡</div>
+      AgenticAI
+    </a>
+    <div class="nav-right">
+      <div class="nav-user">Logged in as <span>@<%= user.username %></span></div>
+      <a href="/logout" class="btn-logout">Sign Out</a>
+    </div>
+  </nav>
+
+  <div class="dashboard-wrap">
+
+    <!-- PROJECT TITLE -->
+    <div class="project-title-box">
+      <div class="tag">🚀 Project</div>
+      <h1>LLM-Based <span>Agentic AI</span> for<br>Tool-Using Reasoning Workflows</h1>
+      <p>Secure AI Workflow Platform — powered by advanced reasoning agents, tool orchestration, and intelligent automation pipelines.</p>
+    </div>
+
+    <!-- USER PROFILE -->
+    <div class="profile-card">
+      <div class="avatar">
+        <% if (user.avatar) { %>
+          <img src="<%= user.avatar %>" alt="avatar" />
+        <% } else { %>
+          <%= user.name.charAt(0).toUpperCase() %>
+        <% } %>
+      </div>
+      <div class="profile-info">
+        <h2>Hello, <%= user.name %>! 👋</h2>
+        <p>Welcome to your AgenticAI dashboard</p>
+      </div>
+    </div>
+
+    <!-- USER DETAILS -->
+    <div class="details-card">
+      <h3>Account Details</h3>
+      <div class="info-row">
+        <span class="info-label">Full Name</span>
+        <span class="info-value"><%= user.name %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Username</span>
+        <span class="info-value highlight">@<%= user.username %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Email ID</span>
+        <span class="info-value"><%= user.email %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone Number</span>
+        <span class="info-value"><%= user.phone || 'Not provided' %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Login Method</span>
+        <span class="info-value"><%= user.googleId ? 'Google OAuth' : 'Username & Password' %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Member Since</span>
+        <span class="info-value"><%= new Date(user.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+      </div>
+    </div>
+
+    <!-- SCROLL HINT -->
+    <div class="scroll-hint">
+      Scroll down to meet the team
+      <span>↓</span>
+    </div>
+
+    <!-- TEAM SECTION -->
+    <div class="team-section">
+      <h2>Our Team</h2>
+      <p class="team-sub">The people who built this platform</p>
+      <div class="team-cards">
+
+        <div class="team-card">
+          <div class="team-photo">
+            <img src="/eek.jpg" alt="Eekshith Sai" onerror="this.style.display='none';this.parentElement.innerText='E'" />
+          </div>
+          <h3>Kandukuri Eekshith Sai</h3>
+          <div class="role-badge">Full Stack & DevOps</div>
+          <p>Developed the login page, Jenkins CI/CD pipeline and full stack integration.</p>
+        </div>
+
+        <div class="team-card">
+          <div class="team-photo">
+            <img src="/rk.jpg" alt="Ravi Kiran" onerror="this.style.display='none';this.parentElement.innerText='R'" />
+          </div>
+          <h3>Bada Ravi Kiran Reddy</h3>
+          <div class="role-badge">DevOps & Project Mgmt</div>
+          <p>Handled Docker containerization, Jira project management and deployment workflows.</p>
+        </div>
+
+        <div class="team-card">
+          <div class="team-photo">
+            <img src="/vt.jpg" alt="Tanish" onerror="this.style.display='none';this.parentElement.innerText='V'" />
+          </div>
+          <h3>Veludandi Tanish</h3>
+          <div class="role-badge">DevOps & Infrastructure</div>
+          <p>Worked on Docker setup, Jira tracking and infrastructure configuration.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2025 AgenticAI — LLM-Based Agentic AI Platform</p>
+  </footer>
+
+</body>
+</html>
